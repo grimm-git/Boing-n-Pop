@@ -1,0 +1,8 @@
+.git
+.log
+*.bak
+*.cfg
+*.dat
+tst/
+
+
