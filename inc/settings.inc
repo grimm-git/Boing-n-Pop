@@ -1,12 +1,12 @@
 
 
-DIM String Settings.name
+DIM String Settings.filename
 
 sub Settings.load(name$)
   LOCAL String line$,key$,num$
   LOCAL Integer n,value,calcdiffs
 
-  Settings.name=name$
+  Settings.filename=name$
 
   on error skip 1
   open Settings.name for INPUT as #1
@@ -81,7 +81,7 @@ end sub
 sub Settings.save()
   LOCAL Integer n,m
 
-  open Settings.name for OUTPUT as #1
+  open Settings.filename for OUTPUT as #1
 
   print #1,"difficulty,"+str$(Intro.Difficulty)
 

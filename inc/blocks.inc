@@ -1,5 +1,3 @@
-'Data and function for obstacle blocks
-
 CONST BLOCKS_MAX=20
 
 CONST BLOCK_EDGE=0
@@ -148,8 +146,6 @@ sub Blocks.draw()
   LOCAL Float x(4),y(4)
   LOCAL Integer blk,n,points
 
-[PHY] exit sub
-
   for blk=0 to Blocks.next-1
     if Blocks.active(blk)=1 then
       if Blocks.fcolor(blk)>-1 then  'Block is transparent
@@ -209,6 +205,7 @@ function Blocks.bounce() as Integer
 
     if Ball.bounce(sx1,sy1,sx2,sy2,REBOUNCE,FRICTION) then
       Blocks.bounce=blk
+      playSample 4,22050
       exit function
     endif
   next

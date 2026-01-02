@@ -112,16 +112,14 @@ function Hiscore.control() as Integer
         else
           Hiscore.Player=player+1
         endif
-'        if Hiscore.Player=2 then Hiscore.State=HISTATE_SHOW
-'        if Hiscore.Player=1 then Hiscore.PLayer=2
       endif        
 
-      if ctrl>0 or key>0 then playSample 1,22050
       if key=13 or key=10 then
-        playSample 1,22050
+        playSample 2,22050
         pause 100 'necessary to play sound fx
         Hiscore.control=1
       endif
+      if ctrl>0 or key>0 then playSample 1,22050
 
     case HISTATE_SHOW
       if key=13 or key=10 then Hiscore.control=1

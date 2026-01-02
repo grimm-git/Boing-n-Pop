@@ -1,5 +1,5 @@
 
-CONST INTRO_ANIMSPD=3 '5
+CONST INTRO_ANIMSPD=3 
 CONST INTRO_ANIMOBJ=12
 CONST INTRO_PHASE=20000
 
@@ -40,7 +40,7 @@ sub Intro.setup()
 
   mode 8,16
   page write PAGE_BUFFER
-'  playMOD "music"
+  playMOD "music"
 end sub
 
 sub Intro.draw()
@@ -99,7 +99,7 @@ function Intro.control() as Integer
   
   select case Intro.state
   case ISTATE_CREDITS
-    if one=0 then one=1 : restore IntroCreditsIn : Intro.prepAnim(6) : tim=TIMER
+    if one=0 then one=1 : tim=TIMER : restore IntroCreditsIn : Intro.prepAnim(6)
     if Intro.anim(0) then
       if Intro.anim(2) then
         if Intro.anim(1) then
@@ -154,6 +154,7 @@ function Intro.control() as Integer
         playMOD "keysound"
         playSample 1,22050
         Intro.state=ISTATE_SETTINGS
+        one=0
       endif
 
     case ISTATE_SETTINGS
@@ -163,8 +164,8 @@ function Intro.control() as Integer
         if (ctrl and 2)>0 or key=131 then inc Intro.numPLayers
         if (ctrl and 1)>0 or key=130 then inc Intro.numPLayers,-1
         if (ctrl and 16)>0 or key=32 then inc Intro.numPLayers
-        if Intro.numPLayers<1 then Intro.NumPlayers=1
-        Intro.numPlayers=min(Intro.numPlayers,Intro.maxPlayers)
+        if Intro.numPLayers<1 then Intro.NumPlayers=Intro.maxPlayers
+        if Intro.numPLayers>Intro.maxPlayers then Intro.NumPlayers=1
         Intro.Cursor.X=1
       else
         if (ctrl and 2)>0 or key=131 then inc Intro.Cursor.X,1
@@ -174,11 +175,15 @@ function Intro.control() as Integer
         if (ctrl and 16)>0 or key=32 then Intro.Difficulty=Intro.Cursor.X
       endif
 
-      if ctrl>0 or key>0 then playSample 1,22050
       if key=13 or key=10 then
-        playSample 1,22050
+        playSample 2,22050
         pause 100 'necessary to play sound fx
         Intro.control=Intro.NumPlayers
+      endif
+      if (ctrl and 16)>0 or key=32 then
+        playSample 2,22050
+      elseif ctrl>0 or key>0 then
+        playSample 1,22050
       endif
     end select
 
@@ -234,7 +239,7 @@ end sub
 
 sub Intro.drawMusic(x!,y!)
     blit 364,64,x!,y!,32,32,PAGE_TITLE,&B100   'music
-    text x!+40,y!+10,"Unknown Artist","L",4,,rgb(230,80,80),-1
+    text x!+40,y!+10,"8-bit Castle by JAM","L",4,,rgb(230,80,80),-1
 end sub
 
 sub Intro.drawIdea(x!,y!)
@@ -280,8 +285,8 @@ IntroCreditsIn:
 data    0,220,   0,  0,0.3 'Credits
 data  320, 28, -90, 28,0.3 'Programming
 data -680, 56,-160, 56,0.3 'SoundFx
-data  320, 84, -90, 84,1.0 'Music
-data -640,112,-150,112,0.3 'Idea
+data  320, 84,-120, 84,1.0 'Music
+data -640,112,-160,112,0.3 'Idea
 data    0,220,   0,160,1.0 'Help
 
 IntroCreditsOut:
@@ -289,8 +294,8 @@ IntroCreditsOut:
 data    0,  0,   0,220,1.0 'Credits
 data  -90, 28, -90,220,1.0 'Programming
 data -160, 56,-160,220,1.0 'SoundFx
-data  -90, 84, -90,220,1.0 'Music
-data -150,112,-150,220,1.0 'Idea
+data -120, 84,-120,220,1.0 'Music
+data -160,112,-160,220,1.0 'Idea
 data    0,160,   0,220,1.0 'Help
 
 IntroHiscoreIn:
@@ -322,11 +327,4 @@ data   -4,128,  -4,220,0.5 'Score #8
 data   -4,142,  -4,220,0.5 'Score #9
 data   -4,156,  -4,220,0.5 'Score #10
 data    0,180,   0,220,0.5 'Help
-
-
-
-
-
-
-
 

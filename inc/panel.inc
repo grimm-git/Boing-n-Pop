@@ -173,7 +173,7 @@ sub Panel.bounce()
       
       inc Ball.vX,nx*lever*PANEL_ROTKICK
       inc Ball.vY,ny*lever*PANEL_ROTKICK+push*PANEL_LATKICK
-
+      if Ball.vY<-100 then playSample 3,22050
       exit sub
     endif
   next

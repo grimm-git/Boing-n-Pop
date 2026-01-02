@@ -4,7 +4,7 @@ OPTION EXPLICIT
 OPTION DEFAULT NONE
 
 #DEFINE "[NUN]",""  'enable extra Nunchuk functions, requires nunchuk.inc
-#DEFINE "[DBG]",""  'enable standard debugging output
+#DEFINE "[DBG]","'"  'enable standard debugging output
 #DEFINE "[MAT]","'"  'enable Math debugging
 #DEFINE "[PHY]","'"  'switch to physical view mode
 
@@ -41,14 +41,12 @@ game.loadAssets()
 '**********************************************************
 '*                     Game Main Loop                     *
 '**********************************************************
-DIM Integer key,one,player,rc
-DIM Integer inpch,ctrl,range
-DIM Float   x,y
+DIM Integer key,one,ctrl
+DIM Integer player,range
 DIM Float   tim
 
-DIM Integer nun,no,n,block
-DIM Float cx,cy
-DIM Float ax,ay,az
+DIM Integer nun,inpch,blk,sno
+DIM Float cx,cy,ax,ay,az
 
 do
   Game.clrScreen()
@@ -123,24 +121,21 @@ do
       Panel.move(player,cx,cy,Nunchuk.getRoll(nun))
     next player
 
-    block=Blocks.bounce()
+    blk=Blocks.bounce()
     Panel.bounce
 
-    'boundary scan
     if Ball.Y>SCREEN.H+Ball.R then
       if Game.Balls>0 then set(Game.Requests,REQ_NEWBALL) else changeState(STATE_OVER)
     else
-      Ball.move()
-      Fruit.hit()
+      Ball.move
+      Fruit.hit
     endif
 
     Game.draw
     Game.drawDashboard
 
-    key=controls.readKey()
-    if key=32 then Ball.vY=-5/Ball.dt
-
   case STATE_OVER
+    if one=0 then one=1 : tim=TIMER : playSample 9,11025
     if isESC() then changeState(STATE_CONFIG)
 
     Game.update
@@ -149,10 +144,8 @@ do
 
     text Screen.W/2, Screen.H/2,"Game Over!","C",5,,map(220),-1
 
-    'timer zum Weiterschalten einbauen
-
     key=controls.readKey()
-    if key=32 then changeState(STATE_HISCORE)
+    if TIMER-tim>5000 or key=32 then changeState(STATE_HISCORE)
 
   case STATE_HISCORE
     if one=0 then one=1 : Hiscore.setup
@@ -164,11 +157,15 @@ do
   end select
   
   Game.swapPage()
+
+  key=controls.readKey()
+  if key=147 then save image "screenshot_"+str$(sno,2,0,"0")+".bmp" : inc sno
+
 loop
 
 '***********************> Game Exit Handling <***********************
-settings.save()
-hiscore.save(HISCORE_NAME)
+settings.save
+hiscore.save
 
 mode 1
 page write 0
@@ -177,7 +174,6 @@ print "Good Bye..."
 
 sub changeState(newstate%)
   Game.State=newstate%
-  playSample 14,22050,1
   one=0
 end sub
 

@@ -21,11 +21,21 @@ sub Ball.init()
 end sub
 
 sub Ball.draw()
-  LOCAL Integer clut
+  LOCAL Integer cy
 
   Ball.dt=cfr(1/75)
-  clut=choice(Ball.Owner=0,7,Player.getCLUT(Ball.Owner))
-  circle Ball.X,Ball.Y,Ball.R,0,1.0,map(clut),map(clut)
+  
+  select case Ball.R
+  case 16
+    cy=32*Ball.Owner
+    blit 600,cy,Ball.X-Ball.R,Ball.Y-Ball.R,32,32,PAGE_SPRITES,&B100
+  case 12
+    cy=96+24*Ball.Owner
+    blit 600,cy,Ball.X-Ball.R,Ball.Y-Ball.R,24,24,PAGE_SPRITES,&B100
+  case 8
+    cy=168+16*Ball.Owner
+    blit 600,cy,Ball.X-Ball.R,Ball.Y-Ball.R,16,16,PAGE_SPRITES,&B100
+  end select
 end sub
 
 sub Ball.update()

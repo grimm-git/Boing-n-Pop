@@ -1,7 +1,7 @@
 
 CONST HISCORE_NUM=10
-CONST HISCORE_NAME="hiscore.dat"
 
+DIM String  Hiscore.filename
 DIM String  Hiscore.name$(HISCORE_NUM)
 DIM Integer Hiscore.score(HISCORE_NUM)
 
@@ -20,6 +20,8 @@ end sub
 sub Hiscore.load(name$)
   LOCAL Integer idx
   LOCAL String line$,key$,value$
+
+  Hiscore.filename=name$
 
   on error skip 1
   open name$ for INPUT as #1
@@ -41,10 +43,10 @@ sub Hiscore.load(name$)
   close #1
 end sub
 
-sub Hiscore.save(name$)
+sub Hiscore.save()
   LOCAL Integer idx
 
-  open name$ for OUTPUT as #1
+  open Hiscore.filename for OUTPUT as #1
 
   for idx=0 to HISCORE_NUM-1
     print #1,Hiscore.name$(idx)+","+str$(Hiscore.score(idx))
@@ -71,7 +73,7 @@ function Hiscore.freePos(score%) as Integer
     endif
   next
 
-  Hiscore.name$(idx)="___"
+  Hiscore.name$(idx)="AAA"
   Hiscore.score(idx)=score%
   Hiscore.freePos=idx
 end function

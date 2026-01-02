@@ -1,5 +1,10 @@
 
-CONST FRUIT_MAX=15
+CONST FRUIT_MAX=20
+CONST FRUIT_LIFE_BASE=10000
+CONST FRUIT_LIFE_VARI=60000
+CONST FRUIT_NEW_FIRST=1000
+CONST FRUIT_NEW_BASE=2000
+CONST FRUIT_NEW_VARI=6000
 
 CONST FSTATE_FREE=0
 CONST FSTATE_SHOW=1
@@ -19,10 +24,10 @@ DIM Float Fruit.State(FRUIT_MAX)
 DIM Integer Fruit.anim(FRUIT_MAX)
 DIM Integer Fruit.aimg(FRUIT_MAX)
 
-DIM Integer Fruit.show(5)=(150,0,1,3,5,3)
-DIM Integer Fruit.hide(5)=(150,3,5,3,1,0)
-DIM Integer Fruit.wiggle(8)=(75,4,3,2,3,4,3,2,3)
-DIM Integer Fruit.pop(16)=(75,0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7)
+DIM Integer Fruit.show(6)=(150,10,0,1,3,5,3)
+DIM Integer Fruit.hide(6)=(150,12,3,5,3,1,0)
+DIM Integer Fruit.wiggle(9)=(75,11,4,3,2,3,4,3,2,3)
+DIM Integer Fruit.pop(17)=(75,0,0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7)
 
 ' Apple,Cherry,Klee,Banana,Blueberry,Citrus,Strawberry,Orange,Wine,Birne,Himbere,Plum
 DIM Integer Fruit.value(11)=(100,1000,1500,42,1242,357,900,750,420,250,600,500)
@@ -37,11 +42,11 @@ end sub
 
 sub Fruit.update()
   STATIC Float interval=TIMER
-  STATIC Float newFruit=TIMER+2000
+  STATIC Float newFruit=TIMER+FRUIT_NEW_FIRST
   LOCAL Integer n
 
   if TIMER>newfruit then
-    newFruit=TIMER+5000+RND*5000
+    newFruit=TIMER+FRUIT_NEW_BASE+RND*FRUIT_NEW_VARI
     Fruit.create
   endif
 
@@ -98,10 +103,10 @@ sub Fruit.create()
       Fruit.Type(n)=int(RND*12)
       Fruit.CellX(n)=ix
       Fruit.CellY(n)=iy
-      Fruit.Life(n)=5000+RND*60000
+      Fruit.Life(n)=FRUIT_LIFE_BASE+RND*FRUIT_LIFE_VARI
       Fruit.Age(n)=TIMER+Fruit.Life(n)
       Fruit.Event(n)=TIMER+Fruit.Life(n)/3+100
-      Fruit.anim(n)=1
+      Fruit.anim(n)=2
       Fruit.aimg(n)=0
       exit for
     endif
@@ -109,10 +114,18 @@ sub Fruit.create()
 end sub
 
 sub Fruit.playAnim(no%,anim%(),state%)
+  if Fruit.anim(no%)=2 then
+    if anim%(1)>0 then
+      playSample anim%(1),22050
+    else
+      playSample 5+4*RND,11025  'sample 5..9
+    endif
+  endif
+
   inc Fruit.anim(no%)
   if Fruit.anim(no%) > bound(anim%()) then
     Fruit.State(no%)=state%
-    Fruit.anim(no%)=1
+    Fruit.anim(no%)=2
   else
     Fruit.aimg(no%)=anim%(Fruit.anim(no%))
   endif
@@ -157,11 +170,6 @@ sub Fruit.hit()
     endif
   next
 end sub
-
-sub Fruit.trigWiggle(no%)
-  if Fruit.State(no%)=FSTATE_READY then Fruit.State(no%)=FSTATE_WIGGLE
-end sub
-
 
 
 

@@ -1,5 +1,3 @@
-' Game objects
-' Code by "Matthias Grimm"
 
 CONST STATE_INTRO=0
 CONST STATE_CONFIG=1
@@ -65,8 +63,6 @@ sub Game.loadAssets()
   cmap.init
   cmap.load "img/colors.cmap"
 
-  Hiscore.load(HISCORE_NAME)
-
   mode 8,16
   page write PAGE_TITLE
   load png "img/title.png"
@@ -77,6 +73,7 @@ sub Game.loadAssets()
   page display PAGE_DISPLAY
 
   Settings.load "Boing'n'Pop!.cfg"
+  Hiscore.load "Boing'n'Pop!.dat"
 end sub
 
 sub Game.new
@@ -87,7 +84,7 @@ sub Game.start
   mode 8,8
   Game.Balls=10
 
-'  playMOD "soundfx"
+  playMOD "soundfx"
 
   cmap.activate
   page write PAGE_PLAYFIELD
@@ -110,8 +107,6 @@ sub Game.update
 end sub
 
 sub Game.draw
-  STATIC Integer stage
-
   Arena.draw
   Blocks.draw
   Fruit.draw
@@ -122,6 +117,7 @@ sub Game.draw
     if NOT tst(Game.Requests,STS_GATEOPEN) then
       if Arena.openGate()=1 then
         set Game.Requests,STS_GATEOPEN
+        playSample 13,22050
         select case Arena.Gate.Side
         case 0
           Ball.reset(VP.X,Arena.Gate.Y-Arena.Gate.W/2)

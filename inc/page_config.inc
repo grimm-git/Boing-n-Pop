@@ -194,7 +194,7 @@ function Config.control() as Integer
         elseif Player.setInpch(idx+1,inpch)=1 then
           _initTransition(idx,CSTATE_MENU)
           if idx+1<Config.numPLayers then Config.State(idx+1)=CSTATE_INPUT
-          playSample 1,22050
+          playSample 2,22050
         endif
       endif
 
@@ -339,7 +339,7 @@ function _handleMainMenu(idx%) as Integer
       elseif cursor=2 then
         _handleMainMenu=CSTATE_MRKEY
       endif
-      playSample 1,22050
+      playSample 2,22050
     endif
   endif
 
@@ -350,5 +350,4 @@ sub _initTransition(idx%,newstate%)
   Config.trans(idx%)=newstate%
   Config.state(idx%)=CSTATE_TRANS
 end sub
-
 
