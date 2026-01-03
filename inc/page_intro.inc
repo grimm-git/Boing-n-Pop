@@ -48,7 +48,7 @@ sub Intro.draw()
   LOCAL Float lf,cx,cy
 
   blit 0,0,(Screen.W-364)/2,0,364,260,PAGE_TITLE,&B100
-  text Screen.W/2+70,250,"(c)2025","L",7,,rgb(220,220,80),-1
+  text Screen.W/2+70,250,"(c)2025/26","L",7,,rgb(220,220,80),-1
 
   lf=18 : cx=Screen.W/2 : cy=270
   select case Intro.state
@@ -179,6 +179,7 @@ function Intro.control() as Integer
         playSample 2,22050
         pause 100 'necessary to play sound fx
         Intro.control=Intro.NumPlayers
+        one=0
       endif
       if (ctrl and 16)>0 or key=32 then
         playSample 2,22050

@@ -144,7 +144,7 @@ do
 
     text Screen.W/2, Screen.H/2,"Game Over!","C",5,,map(220),-1
 
-    key=controls.readKey()
+    key=controls.inKey()
     if TIMER-tim>5000 or key=32 then changeState(STATE_HISCORE)
 
   case STATE_HISCORE

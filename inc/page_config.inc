@@ -65,6 +65,7 @@ sub Config.draw()
   LOCAL String txt$
 
   blit 0,0,(Screen.W-364)/2,0,364,260,PAGE_TITLE,&B100
+  text Screen.W/2+70,250,"(c)2025/26","L",7,,rgb(220,220,80),-1
   nl=MM.INFO(FONTHEIGHT)
 
   for idx=0 to Config.numPlayers-1
@@ -81,7 +82,6 @@ sub Config.draw()
 
     select case Config.State(idx)
     case CSTATE_INPUT
-'      txt$=chr$(22)+Controls.getFireButton(0)+chr$(22)+", "+chr$(22)+Controls.getFireButton(1)+chr$(22)+"or Num-Z"
       txt$="Nunchuk-Z"
 
       inc cy,12

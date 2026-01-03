@@ -24,7 +24,7 @@ sub Hiscore.draw()
   LOCAL String temp$
 
   blit 0,0,(Screen.W-364)/2,0,364,260,PAGE_TITLE,&B100
-  text Screen.W/2+70,250,"(c)2025","L",7,,rgb(220,220,80),-1
+  text Screen.W/2+70,250,"(c)2025/26","L",7,,rgb(220,220,80),-1
 
   lf=14 : cx=Screen.W/2 : cy=270
   blit 396,64,cx-53,cy,106,32,PAGE_TITLE,&B100 : inc cy,30

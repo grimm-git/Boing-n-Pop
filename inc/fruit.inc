@@ -43,16 +43,12 @@ end sub
 sub Fruit.update()
   STATIC Float interval=TIMER
   STATIC Float newFruit=TIMER+FRUIT_NEW_FIRST
-  LOCAL Integer n
-
-  if TIMER>newfruit then
-    newFruit=TIMER+FRUIT_NEW_BASE+RND*FRUIT_NEW_VARI
-    Fruit.create
-  endif
+  LOCAL Integer n,cnt
 
   if TIMER>interval then
     for n=0 to FRUIT_MAX-1
       if Fruit.State(n)=FSTATE_FREE then continue for
+      inc cnt
 
       select case Fruit.State(n)
       case FSTATE_SHOW
@@ -85,6 +81,12 @@ sub Fruit.update()
       end select
     next    
   endif
+
+  if TIMER>newfruit then
+    newFruit=TIMER+choice(cnt>3,FRUIT_NEW_BASE+RND*FRUIT_NEW_VARI,1000)
+    Fruit.create
+  endif
+
 end sub
 
 sub Fruit.create()
